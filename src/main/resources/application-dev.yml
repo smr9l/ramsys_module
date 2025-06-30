@@ -1,0 +1,67 @@
+# Development Environment Configuration
+spring:
+  # Test configuration for PostgreSQL with Testcontainers
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:ramsys_db}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:ramsys}
+    password: ${DB_PASSWORD:ramsys}
+
+  # Show SQL queries in development
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Use Liquibase for schema management
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        
+  # Liquibase configuration
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    drop-first: true  # Drop and recreate schema for each test run
+          
+  # Disable unnecessary features in tests
+  cloud:
+    config:
+      enabled: false
+  config:
+    import: "optional:file:.env[.properties]"
+
+# Logging for tests
+logging:
+  level:
+    com.ramsys: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.cache: DEBUG
+    org.springframework.transaction: DEBUG
+
+testcontainers:
+      reuse:
+        enable: true
+# Swagger/OpenAPI enabled in dev
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    
+# Development CORS - Allow localhost origins
+cors:
+  allowed-origins: http://localhost:3000,http://localhost:3001,http://localhost:4200,http://localhost:8080
+  
+# Development JWT - Shorter expiration for testing
+app:
+  jwt:
+    secret: ${JWT_SECRET:ramsys-dev-secret-key-for-development-only-not-for-production-use}
+    expiration: 3600 # 1 hour for development
+    
+# Error handling - Show stack traces in dev
+server:
+  error:
+    include-stacktrace: always
+    include-exception: true
