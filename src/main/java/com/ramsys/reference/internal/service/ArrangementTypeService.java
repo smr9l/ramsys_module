@@ -5,7 +5,6 @@ import com.ramsys.reference.api.ArrangementTypeApi;
 import com.ramsys.reference.internal.mapper.ArrangementTypeMapper;
 import com.ramsys.reference.internal.repository.ArrangementTypeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

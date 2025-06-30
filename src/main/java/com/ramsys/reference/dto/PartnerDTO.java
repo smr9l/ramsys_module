@@ -2,10 +2,10 @@ package com.ramsys.reference.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ramsys.common.dto.ReferenceDTO;
-import lombok.Data;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * DTO pour les partenaires

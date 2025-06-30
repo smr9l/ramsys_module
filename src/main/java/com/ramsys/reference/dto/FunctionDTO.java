@@ -1,11 +1,9 @@
 package com.ramsys.reference.dto;
 
-import com.ramsys.common.dto.ReferenceDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ramsys.common.dto.ReferenceDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 /**
  * Data Transfer Object for Function.

@@ -1,14 +1,17 @@
  package com.ramsys.reference.internal.specification;
 
-import com.ramsys.reference.dto.PartnerFilterDTO;
-import com.ramsys.reference.model.*;
-import jakarta.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+ import com.ramsys.reference.dto.PartnerFilterDTO;
+ import com.ramsys.reference.model.Country_;
+ import com.ramsys.reference.model.Partner;
+ import com.ramsys.reference.model.PartnerType_;
+ import com.ramsys.reference.model.Partner_;
+ import jakarta.persistence.criteria.Predicate;
+ import org.springframework.data.jpa.domain.Specification;
+ import org.springframework.stereotype.Component;
+ import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+ import java.util.ArrayList;
+ import java.util.List;
 
 @Component
 public class PartnerSpecification {

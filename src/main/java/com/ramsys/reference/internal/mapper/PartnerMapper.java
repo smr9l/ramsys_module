@@ -7,7 +7,6 @@ import com.ramsys.reference.dto.PartnerSummaryDto;
 import com.ramsys.reference.dto.UpdatePartnerDTO;
 import com.ramsys.reference.model.Partner;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 /**

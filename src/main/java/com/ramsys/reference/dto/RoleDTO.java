@@ -1,9 +1,8 @@
-package com.ramsys.users.dto;
+package com.ramsys.reference.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ramsys.common.dto.ReferenceDTO;
 import lombok.Data;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 

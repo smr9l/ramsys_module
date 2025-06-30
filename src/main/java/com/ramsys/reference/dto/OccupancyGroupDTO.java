@@ -2,7 +2,6 @@ package com.ramsys.reference.dto;
 
 import com.ramsys.common.dto.ReferenceDTO;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

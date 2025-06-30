@@ -2,10 +2,11 @@ package com.ramsys.reference.internal.service;
 
 import com.ramsys.common.dto.ReferenceDTO;
 import com.ramsys.common.mapper.LocalizedMapper;
-import com.ramsys.reference.model.Region;
 import com.ramsys.reference.internal.repository.RegionRepository;
+import com.ramsys.reference.model.Region;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service

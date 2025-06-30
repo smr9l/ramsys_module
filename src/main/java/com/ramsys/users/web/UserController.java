@@ -27,31 +27,8 @@ public class UserController {
 
     private final UserManagement userManagement;
 
-    /**
-     * Create a new user
-     * 
-     * @param request the user creation request
-     * @return the created user DTO
-     */
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody CreateUserRequest request) {
-        UserDTO user = userManagement.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
 
-    /**
-     * Update an existing user
-     * 
-     * @param id the user ID
-     * @param request the user update request
-     * @return the updated user DTO
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, 
-                                            @Valid @RequestBody UpdateUserRequest request) {
-        UserDTO user = userManagement.updateUser(id, request);
-        return ResponseEntity.ok(user);
-    }
+
 
     /**
      * Get a user by ID

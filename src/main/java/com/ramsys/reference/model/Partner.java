@@ -1,7 +1,9 @@
 package com.ramsys.reference.model;
 
-import com.ramsys.reference.model.embedded.*;
 import com.ramsys.common.model.Auditable;
+import com.ramsys.reference.model.embedded.AddressInfo;
+import com.ramsys.reference.model.embedded.ContactInfo;
+import com.ramsys.reference.model.embedded.FinancialInfo;
 import jakarta.persistence.*;
 import lombok.*;
 

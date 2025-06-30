@@ -1,8 +1,6 @@
 package com.ramsys.users.dto;
 
 import com.ramsys.common.dto.ReferenceDTO;
-import com.ramsys.reference.dto.LocationDTO;
-import com.ramsys.reference.dto.DivisionDTO;
 import lombok.Builder;
 import lombok.Data;
 

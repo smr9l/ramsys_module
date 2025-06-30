@@ -3,11 +3,7 @@ package com.ramsys.reference.internal.service;
 
 import com.ramsys.common.exception.BusinessException;
 import com.ramsys.common.i18n.MessageService;
-import com.ramsys.reference.dto.CreatePartnerDTO;
-import com.ramsys.reference.dto.PartnerDTO;
-import com.ramsys.reference.dto.PartnerFilterDTO;
-import com.ramsys.reference.dto.PartnerSummaryDto;
-import com.ramsys.reference.dto.UpdatePartnerDTO;
+import com.ramsys.reference.dto.*;
 import com.ramsys.reference.internal.mapper.PartnerMapper;
 import com.ramsys.reference.internal.repository.*;
 import com.ramsys.reference.internal.specification.PartnerSpecification;

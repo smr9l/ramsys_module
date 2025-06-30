@@ -1,7 +1,7 @@
 package com.ramsys.users.dto;
 
-import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class LoginRequest {

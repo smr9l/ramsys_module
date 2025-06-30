@@ -2,8 +2,8 @@ package com.ramsys.reference.internal.service;
 
 import com.ramsys.common.dto.ReferenceDTO;
 import com.ramsys.common.mapper.LocalizedMapper;
-import com.ramsys.reference.model.PartnerType;
 import com.ramsys.reference.internal.repository.PartnerTypeRepository;
+import com.ramsys.reference.model.PartnerType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

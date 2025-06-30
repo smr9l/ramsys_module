@@ -13,19 +13,6 @@ import java.util.Optional;
  */
 
 public interface UserManagement {    /**
-     * Creates a new user.
-     * @param request The request object containing user details.
-     * @return The created user DTO.
-     */
-    UserDTO createUser(CreateUserRequest request);
-
-    /**
-     * Updates an existing user.
-     * @param id The ID of the user to update.
-     * @param request The request object containing user details to update.
-     * @return The updated user DTO.
-     */
-    UserDTO updateUser(Long id, UpdateUserRequest request);
 
     /**
      * Finds a user by their ID.

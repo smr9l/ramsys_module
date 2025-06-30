@@ -1,4 +1,4 @@
-package com.ramsys.ramsys_module;
+package com.ramsys;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

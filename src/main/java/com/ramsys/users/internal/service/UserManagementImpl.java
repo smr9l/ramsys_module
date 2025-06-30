@@ -17,15 +17,6 @@ class UserManagementImpl implements UserManagement {
 
     private final UserService userService;
 
-    @Override
-    public UserDTO createUser(CreateUserRequest request) {
-        return userService.createUser(request);
-    }
-
-    @Override
-    public UserDTO updateUser(Long id, UpdateUserRequest request) {
-        return userService.updateUser(id, request);
-    }
 
     @Override
     public Optional<UserDTO> findUserById(Long id) {

@@ -1,8 +1,8 @@
 package com.ramsys.users.internal.service;
 
+import com.ramsys.users.internal.model.Role;
 import com.ramsys.users.internal.model.User;
 import com.ramsys.users.internal.repository.UserRepository;
-import com.ramsys.users.internal.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

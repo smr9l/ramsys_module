@@ -1,12 +1,9 @@
 package com.ramsys.reference.model;
 
-import com.ramsys.common.model.I18nEntity;
 import com.ramsys.common.model.BaseEntity;
+import com.ramsys.common.model.I18nEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.context.i18n.LocaleContextHolder;
-
-import java.util.Locale;
 
 /**
  * Entité représentant les pays
