@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "ref_profit_centre")
+@Table(name = "ref_profit_center")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,8 +13,8 @@ import lombok.*;
 public class ProfitCenter implements I18nEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_profit_centre_seq")
-    @SequenceGenerator(name = "ref_profit_centre_seq", sequenceName = "ref_profit_centre_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_profit_center_seq")
+    @SequenceGenerator(name = "ref_profit_center_seq", sequenceName = "ref_profit_center_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name", nullable = false, length = 40)
@@ -46,4 +46,4 @@ public class ProfitCenter implements I18nEntity {
     @Column(name = "is_active", nullable = false)
     @Builder.Default
     private Boolean isActive = true;
-} 
+}
