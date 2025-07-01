@@ -20,6 +20,12 @@ INSERT INTO ref_function (code, name_fr, description_fr, created_by) VALUES
 ('REF_PRT', 'Partenaires', 'Gestion des partenaires', 'system'),
 ('REF_INS', 'Assurés', 'Gestion des assurés', 'system');
 
+--changeset system:2a-insert-role-function-data
+--comment: Insertion des données de référence de base
+INSERT INTO ref_role_function (role_id, function_id, created_by) VALUES
+                                                                     ((SELECT id FROM ref_role WHERE code = 'ADMIN'), (SELECT id FROM ref_function WHERE code = 'MNT_CTR'), 'tradi'),
+                                                                     ((SELECT id FROM ref_role WHERE code = 'ADMIN'), (SELECT id FROM ref_function WHERE code = 'REF_PRT'), 'tradi'),
+                                                                     ((SELECT id FROM ref_role WHERE code = 'ADMIN'), (SELECT id FROM ref_function WHERE code = 'REF_INS'), 'tradi');
 --changeset system:3-insert-basic-reference-data
 --comment: Insertion des données de référence de base
 -- Insert basic region
@@ -79,6 +85,6 @@ INSERT INTO ref_user_detail (username, password_hash, first_name, last_name, ema
 
 --changeset system:7-insert-profit-centre-data
 --comment: Insertion des données de centres de profit
-INSERT INTO ref_profit_centre (code, name, name_fr, location_id, division_id, manager_id, created_by) VALUES
+INSERT INTO ref_profit_center (code, name, name_fr, location_id, division_id, manager_id, created_by) VALUES
 ('F1', 'Département Facultative', 'Département Facultative', (SELECT id FROM ref_location WHERE code = 'L1'), (SELECT id FROM ref_division WHERE code = 'F01'), (SELECT id FROM ref_user_detail WHERE username = 'admin'), 'system'),
 ('T1', 'Département Traité', 'Département Traité', (SELECT id FROM ref_location WHERE code = 'L1'), (SELECT id FROM ref_division WHERE code = 'T01'), (SELECT id FROM ref_user_detail WHERE username = 'admin'), 'system');

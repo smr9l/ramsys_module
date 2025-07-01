@@ -14,7 +14,7 @@ import org.springframework.modulith.Modulith;
  *
  * @author RAMSYS Team
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.ramsys", "com.ramsys.config"})
 //@EnableCaching
 @Modulith(
 

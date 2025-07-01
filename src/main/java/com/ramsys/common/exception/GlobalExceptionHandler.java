@@ -5,6 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -90,6 +95,88 @@ public class GlobalExceptionHandler {
         log.warn("Erreur métier (IllegalArgumentException): {}", ex.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
+
+    /**
+     * Gestion des erreurs d'authentification (BadCredentialsException)
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(messageService.getMessage("auth.invalid.credentials"))
+                .message(messageService.getMessage("auth.invalid.credentials"))
+                .build();
+
+        log.warn("Tentative d'authentification avec des identifiants invalides");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    /**
+     * Gestion des erreurs d'utilisateur désactivé (DisabledException)
+     */
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ErrorResponse> handleDisabledException(DisabledException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(messageService.getMessage("auth.user.disabled"))
+                .message(messageService.getMessage("auth.user.disabled"))
+                .build();
+
+        log.warn("Tentative d'authentification d'un utilisateur désactivé");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    /**
+     * Gestion des erreurs d'utilisateur verrouillé (LockedException)
+     */
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<ErrorResponse> handleLockedException(LockedException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(messageService.getMessage("auth.user.locked"))
+                .message(messageService.getMessage("auth.user.locked"))
+                .build();
+
+        log.warn("Tentative d'authentification d'un utilisateur verrouillé");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    /**
+     * Gestion des erreurs d'utilisateur introuvable (UsernameNotFoundException)
+     */
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(messageService.getMessage("auth.invalid.credentials"))
+                .message(messageService.getMessage("auth.invalid.credentials"))
+                .build();
+
+        log.warn("Tentative d'authentification avec un nom d'utilisateur inexistant: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    /**
+     * Gestion générique des erreurs d'authentification
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(messageService.getMessage("auth.invalid.credentials"))
+                .message(messageService.getMessage("auth.invalid.credentials"))
+                .build();
+
+        log.warn("Erreur d'authentification: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+
 
     /**
      * Gestion des erreurs génériques

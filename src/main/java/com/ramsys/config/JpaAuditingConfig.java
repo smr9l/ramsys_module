@@ -12,7 +12,7 @@ import java.util.Optional;
 
 /**
  * JPA Auditing configuration that follows Spring Data JPA best practices.
- * 
+ *
  * This configuration:
  * - Enables JPA auditing for automatic population of audit fields
  * - Provides an AuditorAware implementation that uses Spring Security
@@ -25,7 +25,7 @@ public class JpaAuditingConfig {
 
     /**
      * AuditorAware implementation that integrates with Spring Security.
-     * 
+     *
      * This bean provides the current auditor (user) for JPA auditing.
      * It follows Spring Security best practices by:
      * - Getting the current authentication from SecurityContext
@@ -44,19 +44,19 @@ public class JpaAuditingConfig {
         @NonNull
         public Optional<String> getCurrentAuditor() {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            
+
             if (authentication == null || !authentication.isAuthenticated()) {
                 return Optional.of("system");
             }
-            
+
             String username = authentication.getName();
-            
+
             // Handle anonymous users
             if ("anonymousUser".equals(username)) {
                 return Optional.of("anonymous");
             }
-            
+
             return Optional.of(username);
         }
     }
-}
+} 

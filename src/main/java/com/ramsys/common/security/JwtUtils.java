@@ -107,4 +107,12 @@ public class JwtUtils {
     public long getJwtExpirationMs() {
         return jwtExpirationMs * 1000L;
     }
+
+    public Claims getAllClaimsFromJwtToken(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
 } 

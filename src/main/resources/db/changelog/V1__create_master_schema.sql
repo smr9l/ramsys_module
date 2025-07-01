@@ -332,6 +332,11 @@ CREATE TABLE ref_function (
 CREATE TABLE ref_role_function (
     role_id                 BIGINT NOT NULL REFERENCES ref_role(id) ON DELETE CASCADE,
     function_id             BIGINT NOT NULL REFERENCES ref_function(id) ON DELETE CASCADE,
+    is_active               BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_by              VARCHAR(50),
+    updated_at              TIMESTAMPTZ,
+    updated_by              VARCHAR(50),
     PRIMARY KEY (role_id, function_id)
 );
 
@@ -392,7 +397,7 @@ CREATE TABLE ref_user_detail (
     updated_by              VARCHAR(50)
 );
 
-CREATE TABLE ref_profit_centre (
+CREATE TABLE ref_profit_center (
     id          BIGSERIAL PRIMARY KEY,
     code        VARCHAR(2) UNIQUE NOT NULL,
     name        VARCHAR(40) NOT NULL,
@@ -409,11 +414,13 @@ CREATE TABLE ref_profit_centre (
     updated_by  VARCHAR(50)
 );
 
-CREATE TABLE ref_user_profit_centre (
+CREATE TABLE ref_user_profit_center (
     user_id                 BIGINT NOT NULL REFERENCES ref_user_detail(id) ON DELETE CASCADE,
-    profit_centre_id        BIGINT NOT NULL REFERENCES ref_profit_centre(id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, profit_centre_id)
+    profit_center_id        BIGINT NOT NULL REFERENCES ref_profit_center(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, profit_center_id)
 );
+
+
 
 --changeset system:7-create-indexes
 --comment: Création des index pour améliorer les performances des requêtes
@@ -424,4 +431,4 @@ CREATE INDEX idx_ref_partner_location ON ref_partner(country_id, region_id);
 CREATE INDEX idx_ref_occupancy_group ON ref_occupancy(group_id);
 CREATE INDEX idx_ref_division_location ON ref_division(location_id);
 CREATE INDEX idx_ref_user_detail_manager ON ref_user_detail(manager_id);
-CREATE INDEX idx_ref_profit_centre_manager ON ref_profit_centre(manager_id);
+CREATE INDEX idx_ref_profit_center_manager ON ref_profit_center(manager_id);
