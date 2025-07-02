@@ -7,6 +7,8 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +47,18 @@ public class OpenApiConfig {
                             .scheme("bearer")
                             .bearerFormat("JWT")
                             .description("JWT token authentication")
+                    )
+                    .addParameters("acceptLanguageHeader",
+                        new Parameter()
+                            .in("header")
+                            .name("Accept-Language")
+                            .description("Preferred language for response content (e.g., 'fr', 'en', 'ar')")
+                            .required(false)
+                            .schema(new StringSchema()
+                                ._default("fr")
+                                .example("fr")
+                                ._enum(List.of("fr", "en", "ar"))
+                            )
                     )
                 );
     }
