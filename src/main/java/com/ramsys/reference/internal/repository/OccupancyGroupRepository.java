@@ -1,31 +1,25 @@
 package com.ramsys.reference.internal.repository;
 
+import com.ramsys.common.repository.BaseRepository;
 import com.ramsys.reference.model.OccupancyGroup;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface OccupancyGroupRepository extends JpaRepository<OccupancyGroup, Long> {
-    
+public interface OccupancyGroupRepository extends BaseRepository<OccupancyGroup, Long> {
+
     /**
      * Récupère tous les groupes d'occupation actifs
      * @return Liste des groupes d'occupation actifs
      */
-    List<OccupancyGroup> findByIsActiveTrue();
-    
+    List<OccupancyGroup> findByActiveTrue();
+
     /**
-     * Récupère un groupe d'occupation par son code
+     * Récupère un groupe d'occupation par son code (actif seulement)
      * @param code Le code du groupe
-     * @return Le groupe d'occupation ou null
+     * @return Le groupe d'occupation ou Optional.empty()
      */
-    OccupancyGroup findByCode(String code);
-    
-    /**
-     * Vérifie si un groupe d'occupation avec ce code existe
-     * @param code Le code à vérifier
-     * @return true si un groupe avec ce code existe
-     */
-    boolean existsByCode(String code);
-} 
+    Optional<OccupancyGroup> findByCodeAndActiveTrue(String code);
+}

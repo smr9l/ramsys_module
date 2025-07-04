@@ -11,5 +11,5 @@ public interface FunctionRepository extends JpaRepository<Function, Long> {
     
     Optional<Function> findByCode(String code);
     
-    Optional<Function> findByCodeAndIsActiveTrue(String code);
-} 
+    Optional<Function> findByCodeAndActiveTrue(String code);
+}

@@ -1,8 +1,11 @@
 package com.ramsys.users.internal.model;
 
-import com.ramsys.common.model.BaseEntity;
+import com.ramsys.common.model.Auditable;
+import com.ramsys.common.model.I18nEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -13,7 +16,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Function extends BaseEntity {
+@SQLRestriction("is_active = true")
+public class Function extends  Auditable implements I18nEntity  {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_function_seq")
@@ -52,9 +56,7 @@ public class Function extends BaseEntity {
     @JoinColumn(name = "function_type_id")
     private FunctionType functionType;
     
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+
 
 
 

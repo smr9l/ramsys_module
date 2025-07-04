@@ -64,7 +64,7 @@ public class ArrangementType extends Auditable implements I18nEntity {
                 ", name='" + name + '\'' +
                 ", portfolioType=" + (portfolioType != null ? portfolioType.getCode() : "null") +
                 ", contractType=" + (contractType != null ? contractType.getCode() : "null") +
-                ", isActive=" + getIsActive() +
+                ", isActive=" + isActive() +
                 '}';
     }
 } 

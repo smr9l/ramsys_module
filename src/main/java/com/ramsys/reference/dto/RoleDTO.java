@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class RoleDTO extends ReferenceDTO {
     
     // Les propriétés communes (id, code, label) sont héritées de ReferenceDTO

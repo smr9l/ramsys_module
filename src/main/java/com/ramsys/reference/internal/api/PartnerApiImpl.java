@@ -28,7 +28,7 @@ public class PartnerApiImpl implements PartnerApi {
 
     @Override
     public Page<PartnerDTO> getAllPartners(PartnerFilterDTO filter, Pageable pageable) {
-        return null;
+        return partnerService.getAllPartners(filter, pageable);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class PartnerApiImpl implements PartnerApi {
     public void deactivatePartner(Long id, String reason) {
         Partner partner = partnerService.findPartnerById(id)
                 .orElseThrow(() -> new BusinessException("Partner not found with id: " + id));
-        partner.setIsActive(false);
+        partner.setActive(false);
         partnerService.save(partner);
     }
 

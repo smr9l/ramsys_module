@@ -11,18 +11,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.OffsetDateTime;
 
 
-@Getter
-@Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+
 public abstract class Auditable {
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
+     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
-    @LastModifiedDate
-    @Column(name = "updated_at")
+     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
     @Column(name = "created_by")
@@ -31,8 +30,9 @@ public abstract class Auditable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+
     @Column(name = "is_active", nullable = false)
-    private Boolean isActive = true;
+    private boolean active ;
 
     // Méthode abstraite pour forcer l'implémentation de l'ID dans chaque entité
     public abstract Long getId();
@@ -43,9 +43,9 @@ public abstract class Auditable {
         if (createdAt == null) {
             createdAt = OffsetDateTime.now();
         }
-        if (isActive == null) {
-            isActive = true;
-        }
+
+            active = true;
+
     }
 
     @PreUpdate

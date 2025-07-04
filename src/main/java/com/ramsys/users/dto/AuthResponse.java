@@ -7,13 +7,12 @@ public class AuthResponse {
     private String token;
     private String type = "Bearer";
     private Long expiresIn;
-    private AuthenticatedUserDTO user;
-    
-    public static AuthResponse success(String token, Long expiresIn, AuthenticatedUserDTO user) {
+    private String refreshToken;
+
+    public static AuthResponse success(String token, Long expiresIn) {
         AuthResponse response = new AuthResponse();
         response.setToken(token);
         response.setExpiresIn(expiresIn);
-        response.setUser(user);
         return response;
     }
-} 
+}

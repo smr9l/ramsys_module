@@ -1,6 +1,18 @@
-cors:
-  allowed-origins:
+app:
+  security:
+    cookie-secure: true
+  cors:
+   allowed-origins:
     - "http://localhost:3000"
     - "http://localhost:3001"
     - "http://localhost:4200"
     - "https://app.ramsys-reinsurance.com"
+    - "https://*.lovableproject.com"
+    - "https://lovableproject.com"
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:public-key.pem

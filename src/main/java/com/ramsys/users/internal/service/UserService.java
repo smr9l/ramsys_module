@@ -120,7 +120,7 @@ public class UserService {
     public void deactivateUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("user.not.found"));
-        user.setIsActive(false);
+        user.setActive(false);
         userRepository.save(user);
     }
 

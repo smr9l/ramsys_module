@@ -50,7 +50,7 @@ public class City extends Auditable implements I18nEntity {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", country=" + (country != null ? country.getName() : "null") +
-                ", isActive=" + getIsActive() +
+                ", isActive=" + isActive() +
                 '}';
     }
 } 

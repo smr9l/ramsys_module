@@ -1,5 +1,6 @@
 package com.ramsys.reference.model;
 
+import com.ramsys.common.model.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Location {
+public class Location extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_location_seq")
@@ -50,9 +51,7 @@ public class Location {
     @JoinColumn(name = "accounting_period_id", nullable = false)
     private AccountingPeriod accountingPeriod;
 
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+
 
 
 

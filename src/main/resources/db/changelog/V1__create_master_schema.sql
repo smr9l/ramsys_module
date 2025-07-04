@@ -11,9 +11,9 @@ CREATE TABLE ref_region (
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
     version     INTEGER NOT NULL DEFAULT 0,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -26,9 +26,9 @@ CREATE TABLE ref_country (
     name_ar     VARCHAR(80),
     region_id   BIGINT NOT NULL REFERENCES ref_region(id),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -41,9 +41,9 @@ CREATE TABLE ref_city (
     name_ar     VARCHAR(80),
     country_id  BIGINT NOT NULL REFERENCES ref_country(id) ON DELETE CASCADE,
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -58,9 +58,9 @@ CREATE TABLE ref_currency (
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
     version     INTEGER NOT NULL DEFAULT 0,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -77,9 +77,9 @@ CREATE TABLE ref_period (
     is_open_for_bank_balance    BOOLEAN NOT NULL DEFAULT FALSE,
     is_active                   BOOLEAN NOT NULL DEFAULT TRUE,
     version                     INTEGER NOT NULL DEFAULT 0,
-    created_at                  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at                  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by                  VARCHAR(50),
-    updated_at                  TIMESTAMPTZ,
+    updated_at                  TIMESTAMP WITH TIME ZONE,
     updated_by                  VARCHAR(50),
     UNIQUE (year, month)
 );
@@ -89,9 +89,9 @@ CREATE TABLE ref_currency_exchange (
     period_id   BIGINT NOT NULL REFERENCES ref_period(id) ON DELETE CASCADE,
     currency_id BIGINT NOT NULL REFERENCES ref_currency(id) ON DELETE CASCADE,
     rate        NUMERIC(18, 8) NOT NULL,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50),
     UNIQUE (period_id, currency_id)
 );
@@ -106,9 +106,9 @@ CREATE TABLE ref_partner_type (
     name_en     VARCHAR(80),
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -151,9 +151,9 @@ CREATE TABLE ref_partner (
     is_outwards             BOOLEAN DEFAULT FALSE,
     type_other              VARCHAR(100),
     -- Audit fields
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50)
 );
 
@@ -165,9 +165,9 @@ CREATE TABLE ref_occupancy_group (
     name_en     VARCHAR(80),
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -180,9 +180,9 @@ CREATE TABLE ref_occupancy (
     name_ar     VARCHAR(80),
     group_id    BIGINT NOT NULL REFERENCES ref_occupancy_group(id),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -196,9 +196,9 @@ CREATE TABLE ref_processing_type (
     name_en     VARCHAR(80),
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -210,9 +210,9 @@ CREATE TABLE ref_portfolio_type (
     name_en     VARCHAR(80),
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -224,9 +224,9 @@ CREATE TABLE ref_business_type (
     name_en     VARCHAR(80),
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -238,9 +238,9 @@ CREATE TABLE ref_contract_type (
     name_en     VARCHAR(80),
     name_ar     VARCHAR(80),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -256,9 +256,9 @@ CREATE TABLE ref_arrangement_type (
     processing_type_id      BIGINT NOT NULL REFERENCES ref_processing_type(id),
     business_type_id        BIGINT NOT NULL REFERENCES ref_business_type(id),
     is_active               BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50)
 );
 
@@ -276,9 +276,9 @@ CREATE TABLE ref_group (
     description_en          VARCHAR(255),
     description_ar          VARCHAR(255),
     is_active               BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50)
 );
 
@@ -290,9 +290,9 @@ CREATE TABLE ref_function_type (
     name_en                 VARCHAR(80),
     name_ar                 VARCHAR(80),
     is_active               BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50)
 );
 
@@ -304,9 +304,9 @@ CREATE TABLE ref_role (
     name_en                 VARCHAR(80),
     name_ar                 VARCHAR(80),
     is_active               BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50)
 );
 
@@ -323,21 +323,22 @@ CREATE TABLE ref_function (
     sequence_in_group       INTEGER,
     function_type_id        BIGINT REFERENCES ref_function_type(id),
     is_active               BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50)
 );
 
 CREATE TABLE ref_role_function (
+    id                      BIGSERIAL PRIMARY KEY,
     role_id                 BIGINT NOT NULL REFERENCES ref_role(id) ON DELETE CASCADE,
     function_id             BIGINT NOT NULL REFERENCES ref_function(id) ON DELETE CASCADE,
     is_active               BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50),
-    PRIMARY KEY (role_id, function_id)
+    unique  (role_id, function_id)
 );
 
 --changeset system:6-create-organizational-tables
@@ -357,9 +358,9 @@ CREATE TABLE ref_location (
     currency_id                 BIGINT NOT NULL REFERENCES ref_currency(id),
     accounting_period_id        BIGINT NOT NULL REFERENCES ref_period(id),
     is_active                   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at                  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at                  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by                  VARCHAR(50),
-    updated_at                  TIMESTAMPTZ,
+    updated_at                  TIMESTAMP WITH TIME ZONE,
     updated_by                  VARCHAR(50)
 );
 
@@ -369,9 +370,9 @@ CREATE TABLE ref_division (
     name        VARCHAR(80) NOT NULL,
     location_id BIGINT NOT NULL REFERENCES ref_location(id),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 
@@ -391,9 +392,9 @@ CREATE TABLE ref_user_detail (
     locale                  VARCHAR(10),
     is_active               BOOLEAN NOT NULL DEFAULT TRUE,
     version                 INTEGER NOT NULL DEFAULT 0,
-    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
-    updated_at              TIMESTAMPTZ,
+    updated_at              TIMESTAMP WITH TIME ZONE,
     updated_by              VARCHAR(50)
 );
 
@@ -408,9 +409,9 @@ CREATE TABLE ref_profit_center (
     division_id BIGINT NOT NULL REFERENCES ref_division(id),
     manager_id  BIGINT REFERENCES ref_user_detail(id),
     is_active   BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by  VARCHAR(50),
-    updated_at  TIMESTAMPTZ,
+    updated_at  TIMESTAMP WITH TIME ZONE,
     updated_by  VARCHAR(50)
 );
 

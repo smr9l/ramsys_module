@@ -36,5 +36,5 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
      * @param regionId the region ID
      * @return List of active countries
      */
-    List<Country> findByRegionIdAndIsActiveTrue(Long regionId);
+    List<Country> findByRegionIdAndActiveTrue(Long regionId);
 }

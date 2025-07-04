@@ -1,7 +1,16 @@
 # Development Environment Configuration
 spring:
-  # Test configuration for PostgreSQL with Testcontainers
   datasource:
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 3
+      driver-class-name: org.postgresql.Driver
+      connection-timeout: 30000  # 30 seconds
+      idle-timeout: 600000  # 10 minutes
+      max-lifetime: 1800000  # 30 minutes
+
+     # Test configuration for PostgreSQL with Testcontainers
+    datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:ramsys_db}
     driver-class-name: org.postgresql.Driver
     username: ${DB_USERNAME:ramsys}
@@ -20,7 +29,7 @@ spring:
   # Liquibase configuration
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
-    drop-first: true  # Drop and recreate schema for each test run
+    drop-first: false  # Drop and recreate schema for each test run
           
   # Disable unnecessary features in tests
   cloud:
@@ -50,18 +59,37 @@ springdoc:
   swagger-ui:
     enabled: true
     
-# Development CORS - Allow localhost origins
-cors:
-  allowed-origins: http://localhost:3000,http://localhost:3001,http://localhost:4200,http://localhost:8080
-  
+
 # Development JWT - Shorter expiration for testing
 app:
+  cors:
+    allowed-origins:
+      - "http://localhost:3000"
+      - "http://localhost:3001"
+      - "http://localhost:4200"
+      - "https://app.ramsys-reinsurance.com"
+      - "https://*.lovableproject.com"
+      - "https://lovableproject.com"
   jwt:
-    secret: ${JWT_SECRET:ramsys-dev-secret-key-for-development-only-not-for-production-use}
-    expiration: 3600 # 1 hour for development
-    
+    expiration: 36000 # 10 hour for development
+  security:
+    cookie-secure: false
+
 # Error handling - Show stack traces in dev
 server:
-  error:
+  error: # on production this is set to never on application-prod.yml
     include-stacktrace: always
     include-exception: true
+  ssl:
+    enabled: true
+    key-store: classpath:keystore-dev.p12
+    key-store-password: password
+    key-store-type: PKCS12
+    key-alias: ramsys-dev
+  port: 8443
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:public-key.pem

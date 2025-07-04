@@ -7,6 +7,7 @@ import com.ramsys.reference.dto.PartnerSummaryDto;
 import com.ramsys.reference.dto.UpdatePartnerDTO;
 import com.ramsys.reference.model.Partner;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 /**
@@ -16,15 +17,14 @@ import org.mapstruct.MappingTarget;
  * and should not be accessed directly by other modules. It handles the conversion
  * between Partner entities and various DTOs.</p>
  */
-@Mapper(componentModel = "spring",uses = {LocalizedMapper.class})
+@Mapper(componentModel = "spring", uses = {LocalizedMapper.class, ContactInfoMapper.class, AddressInfoMapper.class, FinancialInfoMapper.class})
 public interface PartnerMapper  {
 
     /**
      * Convert a Partner entity to PartnerDTO
      */
     PartnerDTO toDto(Partner partner);
-
-    Partner toEntity(CreatePartnerDTO createPartnerDTO);
+     Partner toEntity(CreatePartnerDTO createPartnerDTO);
 
     /**
      * Update an existing Partner entity from UpdatePartnerDTO

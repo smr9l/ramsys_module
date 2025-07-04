@@ -38,10 +38,10 @@ public class PartnerSpecification {
                 predicates.add(criteriaBuilder.equal(root.get(Partner_.country).get(Country_.id), filter.getCountryId()));
             }
 
-            // Filter by active status
-            if (filter.getIsActive() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(Partner_.isActive), filter.getIsActive()));
-            }
+//            // Filter by active status
+//            if (filter.isActive() != null) {
+//                predicates.add(criteriaBuilder.equal(root.get(Partner_.isActive), filter.isActive()));
+//            }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

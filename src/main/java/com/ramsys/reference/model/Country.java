@@ -1,7 +1,7 @@
 package com.ramsys.reference.model;
 
-import com.ramsys.common.model.BaseEntity;
-import com.ramsys.common.model.I18nEntity;
+import com.ramsys.common.model.Auditable;
+ import com.ramsys.common.model.I18nEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +16,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Country extends BaseEntity implements I18nEntity {
+public class Country extends Auditable implements I18nEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_country_seq")
@@ -42,9 +42,7 @@ public class Country extends BaseEntity implements I18nEntity {
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+
 
 
     @Override
@@ -54,7 +52,7 @@ public class Country extends BaseEntity implements I18nEntity {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", region=" + (region != null ? region.getName() : "null") +
-                ", isActive=" + getIsActive() +
+                ", isActive=" + isActive() +
                 '}';
     }
 } 

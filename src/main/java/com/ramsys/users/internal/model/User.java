@@ -1,6 +1,6 @@
 package com.ramsys.users.internal.model;
 
-import com.ramsys.common.model.BaseEntity;
+import com.ramsys.common.model.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User extends BaseEntity {
+public class User extends Auditable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_user_detail_seq")
@@ -54,12 +54,9 @@ public class User extends BaseEntity {
     @Column(name = "language", length = 10)
     private String language;
 
-    @Column(name = "locale", length = 10)
-    private String locale;
+
     
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+
     
     @Override
     public String toString() {
@@ -69,7 +66,7 @@ public class User extends BaseEntity {
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", isActive=" + isActive +
+                ", isActive=" +isActive() +
                 '}';
     }
 } 

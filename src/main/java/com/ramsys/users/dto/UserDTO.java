@@ -11,7 +11,7 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String title;
-    private Boolean isActive;
+    private boolean active;
     private RoleDTO role;
     private ReferenceDTO location;
     private ReferenceDTO division;

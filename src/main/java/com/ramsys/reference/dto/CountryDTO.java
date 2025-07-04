@@ -24,6 +24,6 @@
         @Override
         public String toString() {
             return "CountryDTO{id=" + getId() + ", code='" + getCode() + "', label='" + getLabel() +
-                   ", region=" + region + ", isActive=" + getIsActive() + "}";
+                   ", region=" + region + ", isActive=" + isActive() + "}";
         }
     }

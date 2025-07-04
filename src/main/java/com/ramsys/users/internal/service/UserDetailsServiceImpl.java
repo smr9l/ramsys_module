@@ -1,6 +1,8 @@
 package com.ramsys.users.internal.service;
 
+import com.ramsys.users.internal.model.Function;
 import com.ramsys.users.internal.model.Role;
+import com.ramsys.users.internal.model.RoleFunction;
 import com.ramsys.users.internal.model.User;
 import com.ramsys.users.internal.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,9 +35,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user.getRole() != null) {
             Role role = user.getRole();
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
-            
-            if(role.getFunctions() != null) {
-                authorities.addAll(role.getFunctions().stream()
+
+            Set<RoleFunction> safeCopy = new HashSet<>(role.getRoleFunctions());  // ✅ copie défensive
+
+            List<Function> functionList = safeCopy.stream()
+                    .map(RoleFunction::getFunction)
+                    .collect(Collectors.toList());
+
+            if(functionList != null) {
+                authorities.addAll(functionList.stream()
                         .map(function -> new SimpleGrantedAuthority(function.getCode()))
                         .collect(Collectors.toSet()));
             }
@@ -43,7 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPasswordHash(),
-                user.getIsActive(),
+                user.isActive(),
                 true,
                 true,
                 true,

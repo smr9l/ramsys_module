@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Internal mapper for OccupancyGroup entities.
  */
-@Mapper(componentModel = "spring", uses = {LocalizedMapper.class})
+@Mapper(componentModel = "spring", uses = {LocalizedMapper.class, OccupancyMapper.class})
 public interface OccupancyGroupMapper {
     @Mapping(target = "label", expression = "java(group.getLocalizedName())")
     OccupancyGroupDTO toDto(OccupancyGroup group);

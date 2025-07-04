@@ -24,7 +24,7 @@ class CurrencyService implements CurrencyApi {
     @Override
     @Cacheable("currencies")
     public List<ReferenceDTO> getAllCurrencies() {
-        return currencyRepository.findAllByIsActiveTrueOrderByCode().stream()
+        return currencyRepository.findAllByActiveTrueOrderByCode().stream()
                 .map(currency -> currencyMapper.toReferenceDTO(currency ))
                 .collect(Collectors.toList());
     }

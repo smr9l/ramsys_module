@@ -1,6 +1,6 @@
 package com.ramsys.users.internal.model;
 
-import com.ramsys.common.model.BaseEntity;
+import com.ramsys.common.model.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -13,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FunctionType extends BaseEntity {
+public class FunctionType extends Auditable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_function_type_seq")

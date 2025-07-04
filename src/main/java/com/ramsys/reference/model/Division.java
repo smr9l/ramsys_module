@@ -29,8 +29,6 @@ public class Division extends Auditable {
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+
 
 } 

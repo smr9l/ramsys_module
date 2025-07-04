@@ -12,7 +12,5 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     
     Optional<Location> findByCode(String code);
     
-    List<Location> findByIsActiveTrueOrderByCode();
-    
-    boolean existsByCode(String code);
-} 
+
+ }

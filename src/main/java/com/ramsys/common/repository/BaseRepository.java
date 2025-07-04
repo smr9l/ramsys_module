@@ -1,9 +1,11 @@
 package com.ramsys.common.repository;
 
-import com.ramsys.common.model.BaseEntity;
+import com.ramsys.common.model.Auditable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,26 +18,38 @@ import java.util.Optional;
  * capabilities without reinventing the wheel.
  */
 @NoRepositoryBean
-public interface BaseRepository<T extends BaseEntity, ID> extends 
+public interface BaseRepository<T extends Auditable, ID> extends
     JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
 
     /**
      * Find all active entities
      */
-    List<T> findByIsActiveTrue();
+    List<T> findByActiveTrue();
 
     /**
      * Find entity by ID if active
      */
-    Optional<T> findByIdAndIsActiveTrue(ID id);
+    Optional<T> findByIdAndActiveTrue(ID id);
 
     /**
      * Check if entity exists and is active
      */
-    boolean existsByIdAndIsActiveTrue(ID id);
+    boolean existsByIdAndActiveTrue(ID id);
 
     /**
      * Count active entities
      */
-    long countByIsActiveTrue();
-} 
+    long countByActiveTrue();
+
+    /**
+     * Find all entities including inactive ones (for admin purposes)
+     */
+    @Query("SELECT e FROM #{#entityName} e")
+    List<T> findAllIncludingInactive();
+
+    /**
+     * Find entity by ID including inactive ones (for admin purposes)
+     */
+    @Query("SELECT e FROM #{#entityName} e WHERE e.id = :id")
+    Optional<T> findByIdIncludingInactive(@Param("id") ID id);
+}

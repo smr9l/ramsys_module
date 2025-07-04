@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -47,8 +48,8 @@ public class PartnerController {
             )
         )
     })
-    public Page<PartnerDTO> getAllPartners(
-        @Parameter(description = "Filter criteria for partners") PartnerFilterDTO filter,
+    public Page<PartnerDTO> getAllPartners( @ParameterObject
+        @Parameter(description = "Filter criteria for partners") @Valid PartnerFilterDTO filter,
         @Parameter(description = "Pagination information") Pageable pageable
     ) {
         return partnerApi.getAllPartners(filter, pageable);

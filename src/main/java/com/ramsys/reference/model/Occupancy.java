@@ -49,7 +49,7 @@ public class Occupancy extends Auditable implements I18nEntity {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", group=" + (group != null ? group.getName() : "null") +
-                ", isActive=" + getIsActive() +
+                ", isActive=" + isActive() +
                 '}';
     }
 } 

@@ -41,5 +41,5 @@ public class CreateUserRequest {
     
     private Long managerId;
     
-    private Boolean isActive = true;
+    private Boolean active = true;
 } 

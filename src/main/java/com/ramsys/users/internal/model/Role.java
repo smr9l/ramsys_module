@@ -1,8 +1,12 @@
 package com.ramsys.users.internal.model;
 
-import com.ramsys.common.model.BaseEntity;
+import com.ramsys.common.model.Auditable;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.HashSet;
@@ -15,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Role extends BaseEntity {
+public class Role extends Auditable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_role_seq")
@@ -36,19 +40,6 @@ public class Role extends BaseEntity {
     
     @Column(name = "name_ar", length = 80)
     private String nameAr;
-    
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "ref_role_function",
-        joinColumns = @JoinColumn(name = "role_id"),
-        inverseJoinColumns = @JoinColumn(name = "function_id")
-    )
-    @Builder.Default
-    private Set<Function> functions = new HashSet<>();
-    
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
 
     @Override
     public final boolean equals(Object o) {
@@ -65,4 +56,14 @@ public class Role extends BaseEntity {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+    @SQLRestriction( "is_active = true" )
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<RoleFunction> roleFunctions = new HashSet<>();
+
+
+
+
+
 }

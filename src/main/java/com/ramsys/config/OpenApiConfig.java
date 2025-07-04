@@ -35,7 +35,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(apiInfo())
                 .servers(List.of(
-                    new Server().url("http://localhost:" + serverPort).description("Development server"),
+                    new Server().url("https://localhost:" + serverPort).description("Development server"),
                     new Server().url("https://staging.ramsys-reinsurance.com").description("Staging server"),
                     new Server().url("https://api.ramsys-reinsurance.com").description("Production server")
                 ))

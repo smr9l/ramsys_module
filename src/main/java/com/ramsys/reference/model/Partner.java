@@ -1,6 +1,7 @@
 package com.ramsys.reference.model;
 
 import com.ramsys.common.model.Auditable;
+import com.ramsys.reference.internal.generator.PartnerCode;
 import com.ramsys.reference.model.embedded.AddressInfo;
 import com.ramsys.reference.model.embedded.ContactInfo;
 import com.ramsys.reference.model.embedded.FinancialInfo;
@@ -35,6 +36,7 @@ public class Partner extends Auditable {
     private Long id;
 
     // === INFORMATIONS DE BASE ===
+    @PartnerCode
     @Column(name = "code", unique = true, nullable = false, length = 10)
     private String code;
 
@@ -64,9 +66,9 @@ public class Partner extends Auditable {
     @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
-    @Column
-    (name = "is_active", nullable = false)
-    private Boolean isActive ;
+    // Supprime le champ isActive redondant car il vient d'Auditable
+    // @Column(name = "is_active", nullable = false)
+    // private Boolean isActive;
 
     // === OBJETS EMBEDDÉS POUR ORGANISER LES INFORMATIONS ===
     

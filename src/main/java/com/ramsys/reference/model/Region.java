@@ -48,7 +48,7 @@ public class Region extends Auditable implements I18nEntity {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
-                ", isActive=" + getIsActive() +
+                ", isActive=" + isActive() +
                 '}';
     }
 } 

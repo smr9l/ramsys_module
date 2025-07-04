@@ -15,27 +15,16 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     
     Optional<User> findByUsername(String username);
-    
-    Optional<User> findByUsernameAndIsActiveTrue(String username);
-    
-    Optional<User> findByEmail(String email);
-    
-    List<User> findByIsActiveTrue();
-    
-    Page<User> findByIsActiveTrue(Pageable pageable);
+
     
     boolean existsByUsername(String username);
     
     boolean existsByEmail(String email);
     
-    @Query("SELECT u FROM User u WHERE u.role.code = :roleCode AND u.isActive = true")
+    @Query("SELECT u FROM User u WHERE u.role.code = :roleCode AND u.active = true")
     List<User> findByRolesCode(@Param("roleCode") String roleCode);
     
-    List<User> findByLocationIdAndIsActiveTrue(Long locationId);
 
-    List<User> findByDivisionIdAndIsActiveTrue(Long divisionId);
-
-    List<User> findByManagerIdAndIsActiveTrue(Long managerId);
     
     @Query("SELECT u FROM User u WHERE " +
            "LOWER(u.username) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +

@@ -1,5 +1,6 @@
 package com.ramsys.reference.model;
 
+import com.ramsys.common.model.Auditable;
 import com.ramsys.common.model.I18nEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProfitCenter implements I18nEntity {
+public class ProfitCenter extends Auditable  implements I18nEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_profit_center_seq")
@@ -43,7 +44,5 @@ public class ProfitCenter implements I18nEntity {
     @Column(name = "manager_id")
     private Long managerId;
 
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+
 }

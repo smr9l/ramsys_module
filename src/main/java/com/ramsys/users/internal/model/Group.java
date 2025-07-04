@@ -1,6 +1,7 @@
 package com.ramsys.users.internal.model;
 
-import com.ramsys.common.model.BaseEntity;
+import com.ramsys.common.model.Auditable;
+import com.ramsys.common.model.I18nEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Group extends BaseEntity {
+public class Group extends Auditable implements I18nEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ref_group_seq")
@@ -35,18 +36,16 @@ public class Group extends BaseEntity {
     @Column(name = "name_ar", length = 80)
     private String nameAr;
     
-    @Column(name = "description_fr", length = 255)
-    private String descriptionFr;
+//    @Column(name = "description_fr", length = 255)
+//    private String descriptionFr;
+//
+//    @Column(name = "description_en", length = 255)
+//    private String descriptionEn;
+//
+//    @Column(name = "description_ar", length = 255)
+//    private String descriptionAr;
     
-    @Column(name = "description_en", length = 255)
-    private String descriptionEn;
-    
-    @Column(name = "description_ar", length = 255)
-    private String descriptionAr;
-    
-    @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
+
 
     @Override
     public final boolean equals(Object o) {

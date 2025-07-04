@@ -1,6 +1,5 @@
 package com.ramsys.config;
 
-import com.ramsys.common.security.CookieJwtFilter;
 import com.ramsys.common.security.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,11 +21,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -43,7 +40,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${cors.allowed-origins}")
+    @Value("${app.cors.allowed-origins:*}")
     private List<String> allowedOrigins;
 
     private static final String[] WHITE_LIST_URLS = {
@@ -55,7 +52,6 @@ public class SecurityConfig {
     };
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
-    private final JwtDecoder jwtDecoder; // Spring will inject our JWT decoder bean
 
     @Profile("dev")
     @Bean
@@ -76,21 +72,21 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-    @Bean
-    public CookieJwtFilter cookieJwtFilter() {
-        return new CookieJwtFilter();
-    }
+//    @Bean
+//    public CookieJwtFilter cookieJwtFilter() {
+//        return new CookieJwtFilter();
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .addFilterBefore(cookieJwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(cookieJwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/api/**") // allow JWT-based endpoints
-                        .requireCsrfProtectionMatcher(request -> request.getRequestURI().equals("/api/auth/refresh"))
-
+                            .requireCsrfProtectionMatcher(request ->
+                            request.getRequestURI().equals("/api/auth/refresh")
+                        )
                 ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(auth -> auth
@@ -99,7 +95,6 @@ public class SecurityConfig {
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
-                                .decoder(jwtDecoder) // Use our custom JWT decoder bean
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
 
@@ -116,16 +111,19 @@ public class SecurityConfig {
                             response.setHeader("Pragma", "no-cache");
                         })
                 )
+                .requiresChannel(channel -> channel
+                        .anyRequest().requiresSecure() // Force HTTPS pour toutes les requêtes
+                )
                 .build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(allowedOrigins);
+        config.setAllowedOriginPatterns(allowedOrigins);
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-CSRF-Token", "X-Requested-With"));
-        config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "X-CSRF-Token", "X-Total-Count"));
+        config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "X-CSRF-Token", "X-Total-Count", "Set-Cookie"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 
@@ -160,4 +158,4 @@ public class SecurityConfig {
                     .collect(Collectors.toList());
         };
     }
-} 
+}

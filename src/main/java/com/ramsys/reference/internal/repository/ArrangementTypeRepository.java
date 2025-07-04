@@ -9,12 +9,7 @@ import java.util.List;
 @Repository
 public interface ArrangementTypeRepository extends JpaRepository<ArrangementType, Long> {
     
-    /**
-     * Récupère tous les types d'arrangement actifs
-     * @return Liste des types d'arrangement actifs
-     */
-    List<ArrangementType> findByIsActiveTrue();
-    
+
     /**
      * Récupère tous les types d'arrangement d'un type de portefeuille
      * @param portfolioTypeId L'ID du type de portefeuille

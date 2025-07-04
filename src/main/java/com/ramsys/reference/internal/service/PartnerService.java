@@ -45,20 +45,22 @@ public class PartnerService {
     }
 
     /**
-     * Récupère tous les partenaires sous forme de PartnerDTO
-     * @return Liste des partenaires en PartnerDTO
+     * Récupère tous les partenaires actifs sous forme de PartnerSummaryDto
+     * @return Liste des partenaires actifs en PartnerSummaryDto
      */
     public List<PartnerSummaryDto> getActivePartners() {
-        return partnerRepository.findActivePartners().stream().map(partnerMapper::toSummaryDto).collect(Collectors.toList());
+        return partnerRepository.findByActiveTrue().stream()
+                .map(partnerMapper::toSummaryDto)
+                .collect(Collectors.toList());
     }
 
     /**
-     * Récupère un partenaire par son ID
+     * Récupère un partenaire actif par son ID
      * @param id L'ID du partenaire
      * @return Le partenaire en PartnerDTO
      */
     public PartnerDTO getPartnerById(Long id) {
-        Partner partner = partnerRepository.findById(id)
+        Partner partner = partnerRepository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> new BusinessException(messageService.getMessage("partner.notfound", id)));
         return partnerMapper.toDto(partner);
     }

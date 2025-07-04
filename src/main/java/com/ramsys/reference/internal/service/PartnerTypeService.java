@@ -31,7 +31,7 @@ public class PartnerTypeService {
     }
 
     public List<ReferenceDTO> getActivePartnerTypes(Locale locale) {
-        List<PartnerType> partnerTypes = partnerTypeRepository.findByIsActiveTrue();
+        List<PartnerType> partnerTypes = partnerTypeRepository.findByActiveTrue();
         return referenceMapper.toDtoList(partnerTypes, locale);
     }
 } 

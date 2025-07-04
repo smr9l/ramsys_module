@@ -8,7 +8,6 @@ public interface I18nEntity {
 
     Long getId();
     String getCode();
-    Boolean getIsActive();
 
     String getNameFr();
     String getNameEn();

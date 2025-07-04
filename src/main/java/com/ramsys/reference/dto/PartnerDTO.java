@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * DTO pour les partenaires
  */
@@ -29,8 +31,14 @@ public class PartnerDTO {
     private ReferenceDTO country;
     private ReferenceDTO currency;
     private String rating;
-    private Boolean isActive;
-    
+    private Boolean active;  // Changé de isActive vers active
+    private String comment;
+    private ContactInfoDto contactInfo;
+    private AddressInfoDto addressInfo;
+    private FinancialInfoDto financialInfo;
+    private PartnerSummaryDto parentPartner;
+     private String otherType;
+
     @Override
     public String toString() {
         return "PartnerDTO{" +
