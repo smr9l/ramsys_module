@@ -9,6 +9,16 @@ public class AuthResponse {
     private Long expiresIn;
     private String refreshToken;
 
+    public AuthResponse(String token, String type, Long expiresIn, String refreshToken) {
+        this.token = token;
+        this.type = type;
+        this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
+    }
+
+    public AuthResponse() {
+    }
+
     public static AuthResponse success(String token, Long expiresIn) {
         AuthResponse response = new AuthResponse();
         response.setToken(token);

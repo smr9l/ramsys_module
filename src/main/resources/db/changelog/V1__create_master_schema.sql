@@ -96,6 +96,22 @@ CREATE TABLE ref_currency_exchange (
     UNIQUE (period_id, currency_id)
 );
 
+CREATE TABLE ref_rating (
+    id          BIGSERIAL PRIMARY KEY,
+    code        VARCHAR(4) UNIQUE NOT NULL,
+    name        VARCHAR(80) NOT NULL,
+    name_fr     VARCHAR(80),
+    name_en     VARCHAR(80),
+    name_ar     VARCHAR(80),
+    description VARCHAR(255),
+    numeric_value INTEGER,
+    is_active   BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    created_by  VARCHAR(50),
+    updated_at  TIMESTAMP WITH TIME ZONE,
+    updated_by  VARCHAR(50)
+);
+
 --changeset system:3-create-business-partner-tables
 --comment: Création des tables de référence pour les partenaires et les assurés
 CREATE TABLE ref_partner_type (
@@ -131,7 +147,7 @@ CREATE TABLE ref_partner (
     prefix_mail             VARCHAR(32),
     domaine                 VARCHAR(32),
     -- FinancialInfo embedded fields
-    rating                  VARCHAR(4),
+    rating_id               BIGINT REFERENCES ref_rating(id),
     scoring                 INTEGER,
     bank_name               VARCHAR(100),
     bank_iban               VARCHAR(30),
@@ -149,12 +165,18 @@ CREATE TABLE ref_partner (
     is_reinsurer            BOOLEAN DEFAULT FALSE,
     is_inwards              BOOLEAN DEFAULT FALSE,
     is_outwards             BOOLEAN DEFAULT FALSE,
-    type_other              VARCHAR(100),
+    type_other              VARCHAR(32),
     -- Audit fields
     created_at              TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by              VARCHAR(50),
     updated_at              TIMESTAMP WITH TIME ZONE,
-    updated_by              VARCHAR(50)
+    updated_by              VARCHAR(50),
+    -- Contrainte métier : type_other obligatoire si partner_type = 'OTHER'
+    CONSTRAINT chk_partner_type_other CHECK (
+        (partner_type_id IN (SELECT id FROM ref_partner_type WHERE code = 'OTHER') AND type_other IS NOT NULL AND TRIM(type_other) != '')
+        OR
+        (partner_type_id NOT IN (SELECT id FROM ref_partner_type WHERE code = 'OTHER'))
+    )
 );
 
 CREATE TABLE ref_occupancy_group (
@@ -345,18 +367,21 @@ CREATE TABLE ref_role_function (
 --comment: Création des tables organisationnelles (Location, Division, Utilisateur, Centre de Profit)
 CREATE TABLE ref_location (
     id                          BIGSERIAL PRIMARY KEY,
-    code                        VARCHAR(10) UNIQUE NOT NULL,
+    code                        VARCHAR(2) UNIQUE NOT NULL,
     name                        VARCHAR(100) NOT NULL,
     partner_id                  BIGINT NOT NULL REFERENCES ref_partner(id),
-    address_line1               VARCHAR(255),
-    address_line2               VARCHAR(255),
-    zip_code                    VARCHAR(20),
-    city_id                     BIGINT NOT NULL REFERENCES ref_city(id),
-    phone                       VARCHAR(20),
-    fax                         VARCHAR(20),
-    email                       VARCHAR(100),
-    currency_id                 BIGINT NOT NULL REFERENCES ref_currency(id),
-    accounting_period_id        BIGINT NOT NULL REFERENCES ref_period(id),
+    city_id                     BIGINT REFERENCES ref_city(id),
+    reporting_currency_id       BIGINT NOT NULL REFERENCES ref_currency(id),
+    starting_year               INTEGER NOT NULL,
+    current_period_id           BIGINT REFERENCES ref_period(id),
+    locale                      VARCHAR(10) NOT NULL DEFAULT 'fr-FR',
+    decimal_places              SMALLINT NOT NULL DEFAULT 2,
+    percentage_decimal_places   SMALLINT DEFAULT 8,
+    settlement_tolerance        NUMERIC(15,5) NOT NULL DEFAULT 5.00000,
+    uncovered_tolerance         NUMERIC(15,5) DEFAULT 0,
+    is_factoring_enabled        BOOLEAN NOT NULL DEFAULT FALSE,
+    financial_partner_id        BIGINT REFERENCES ref_partner(id),
+    default_bank_account        INTEGER,
     is_active                   BOOLEAN NOT NULL DEFAULT TRUE,
     created_at                  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     created_by                  VARCHAR(50),
@@ -421,13 +446,12 @@ CREATE TABLE ref_user_profit_center (
     PRIMARY KEY (user_id, profit_center_id)
 );
 
-
-
 --changeset system:7-create-indexes
 --comment: Création des index pour améliorer les performances des requêtes
 CREATE INDEX idx_ref_country_region ON ref_country(region_id);
 CREATE INDEX idx_ref_city_country ON ref_city(country_id);
 CREATE INDEX idx_ref_partner_type ON ref_partner(partner_type_id);
+CREATE INDEX idx_ref_partner_rating ON ref_partner(rating_id);
 CREATE INDEX idx_ref_partner_location ON ref_partner(country_id, region_id);
 CREATE INDEX idx_ref_occupancy_group ON ref_occupancy(group_id);
 CREATE INDEX idx_ref_division_location ON ref_division(location_id);
