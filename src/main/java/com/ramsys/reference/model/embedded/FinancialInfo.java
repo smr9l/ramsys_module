@@ -1,7 +1,7 @@
 package com.ramsys.reference.model.embedded;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import com.ramsys.reference.model.Rating;
+import jakarta.persistence.*;
 import lombok.*;
 
 /**
@@ -15,8 +15,9 @@ import lombok.*;
 @AllArgsConstructor
 public class FinancialInfo {
 
-    @Column(name = "rating", length = 4)
-    private String rating;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rating_id")
+    private Rating rating;
 
     @Column(name = "scoring")
     private Integer scoring;
@@ -85,4 +86,4 @@ public class FinancialInfo {
                 ", riskLevel='" + getRiskLevel() + '\'' +
                 '}';
     }
-} 
+}

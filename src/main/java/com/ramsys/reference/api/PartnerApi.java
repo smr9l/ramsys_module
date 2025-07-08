@@ -53,7 +53,7 @@ public interface PartnerApi {
      * @param updatePartnerDTO The DTO containing the fields to update.
      * @return The updated PartnerDTO.
      */
-    PartnerDTO updatePartner(Long id, UpdatePartnerDTO updatePartnerDTO);
+    PartnerDTO updatePartner(Long id, CreatePartnerDTO updatePartnerDTO);
 
     /**
      * Deactivates a partner for a given reason.
@@ -61,7 +61,7 @@ public interface PartnerApi {
      * @param id The ID of the partner to deactivate.
      * @param reason The reason for deactivation, for auditing purposes.
      */
-    void deactivatePartner(Long id, String reason);
+    void deactivatePartner(Long id);
 
 
     // --- Partner Type Methods ---
@@ -80,4 +80,13 @@ public interface PartnerApi {
      * @return An Optional containing the ReferenceDTO if found.
      */
     Optional<ReferenceDTO> getPartnerTypeById(Long id);
+
+    // --- Rating Methods ---
+
+    /**
+     * Retrieves all available partner ratings.
+     *
+     * @return A list of partner ratings as ReferenceDTOs.
+     */
+    List<ReferenceDTO> getPartnerRatings();
 }

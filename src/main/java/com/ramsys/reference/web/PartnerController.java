@@ -1,6 +1,7 @@
 package com.ramsys.reference.web;
 
 import com.ramsys.common.dto.ReferenceDTO;
+import com.ramsys.common.security.Authority;
 import com.ramsys.reference.api.PartnerApi;
 import com.ramsys.reference.dto.CreatePartnerDTO;
 import com.ramsys.reference.dto.PartnerDTO;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,12 +50,26 @@ public class PartnerController {
             )
         )
     })
+    @PreAuthorize(Authority.HAS_REF_PRT)
     public Page<PartnerDTO> getAllPartners( @ParameterObject
         @Parameter(description = "Filter criteria for partners") @Valid PartnerFilterDTO filter,
         @Parameter(description = "Pagination information") Pageable pageable
     ) {
         return partnerApi.getAllPartners(filter, pageable);
     }
+
+    @GetMapping("/partners/{id}")
+    @Operation(
+        summary = "Get partner by ID",
+        description = "Retrieve a specific partner by its ID"
+    )
+    @PreAuthorize(Authority.HAS_REF_PRT)
+    public PartnerDTO getPartnerById(
+        @Parameter(description = "Partner ID") @PathVariable Long id
+    ) {
+        return partnerApi.getPartnerById(id);
+    }
+
 
     @PostMapping("/partners")
     @Operation(
@@ -78,9 +94,36 @@ public class PartnerController {
             )
         )
     })
+    @PreAuthorize(Authority.HAS_REF_PRT)
     public ResponseEntity<PartnerDTO> createPartner(@Valid @RequestBody CreatePartnerDTO createPartnerDTO) {
         PartnerDTO createdPartner = partnerApi.createPartner(createPartnerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPartner);
+    }
+
+    @PutMapping("/partners/{id}")
+    @Operation(
+        summary = "Update an existing partner",
+        description = "Update the details of an existing partner"
+    )
+    @PreAuthorize(Authority.HAS_REF_PRT)
+    public ResponseEntity<PartnerDTO> updatePartner(
+        @Parameter(description = "Partner ID") @PathVariable Long id,
+        @Valid @RequestBody CreatePartnerDTO updatePartnerDTO
+    ) {
+        PartnerDTO updatedPartner = partnerApi.updatePartner(id, updatePartnerDTO);
+        return ResponseEntity.ok(updatedPartner);
+    }
+    @DeleteMapping("/partners/{id}")
+    @Operation(
+        summary = "Delete a partner",
+        description = "Delete a specific partner by its ID"
+    )
+    @PreAuthorize(Authority.HAS_REF_PRT)
+    public ResponseEntity<Void> deletePartner(
+        @Parameter(description = "Partner ID") @PathVariable Long id
+    ) {
+        partnerApi.deactivatePartner(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/partner-types")
@@ -92,6 +135,7 @@ public class PartnerController {
         responseCode = "200",
         description = "Partner types retrieved successfully"
     )
+    @PreAuthorize(Authority.HAS_REF_PRT)
     public List<ReferenceDTO> getAllPartnerTypes() {
         return partnerApi.getAllPartnerTypes();
     }
@@ -115,9 +159,24 @@ public class PartnerController {
             description = "Partner type not found"
         )
     })
+    @PreAuthorize(Authority.HAS_REF_PRT)
     public ResponseEntity<ReferenceDTO> getPartnerTypeById(
         @Parameter(description = "Partner type ID") @PathVariable Long id
     ) {
         return ResponseEntity.of(partnerApi.getPartnerTypeById(id));
     }
-} 
+    
+    @GetMapping("/partner-ratings")
+    @Operation(
+        summary = "Get all partner ratings",
+        description = "Retrieve all available partner ratings"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "Partner ratings retrieved successfully"
+    )
+    @PreAuthorize(Authority.HAS_REF_PRT)
+    public List<ReferenceDTO> getPartnerRatings() {
+        return partnerApi.getPartnerRatings();
+    }
+}

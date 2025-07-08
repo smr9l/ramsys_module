@@ -26,80 +26,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableCaching
 @EnableAsync
 public class ReferenceModuleConfig {
-    
-    /**
-     * Configuration properties for the Reference module
-     */
-    @Bean
-    @ConfigurationProperties("ramsys.reference")
-    public ReferenceModuleProperties referenceProperties() {
-        return new ReferenceModuleProperties();
-    }
+
 }
 
 /**
  * Configuration properties for the Reference module
  */
-class ReferenceModuleProperties {
-    
-    private CacheProperties cache = new CacheProperties();
-    private ValidationProperties validation = new ValidationProperties();
-    
-    public CacheProperties getCache() {
-        return cache;
-    }
-    
-    public void setCache(CacheProperties cache) {
-        this.cache = cache;
-    }
-    
-    public ValidationProperties getValidation() {
-        return validation;
-    }
-    
-    public void setValidation(ValidationProperties validation) {
-        this.validation = validation;
-    }
-    
-    public static class CacheProperties {
-        private long ttlMinutes = 120; // 2 hours default
-        private long maxSize = 1000;
-        
-        public long getTtlMinutes() {
-            return ttlMinutes;
-        }
-        
-        public void setTtlMinutes(long ttlMinutes) {
-            this.ttlMinutes = ttlMinutes;
-        }
-        
-        public long getMaxSize() {
-            return maxSize;
-        }
-        
-        public void setMaxSize(long maxSize) {
-            this.maxSize = maxSize;
-        }
-    }
-    
-    public static class ValidationProperties {
-        private boolean strictValidation = true;
-        private boolean validateReferences = true;
-        
-        public boolean isStrictValidation() {
-            return strictValidation;
-        }
-        
-        public void setStrictValidation(boolean strictValidation) {
-            this.strictValidation = strictValidation;
-        }
-        
-        public boolean isValidateReferences() {
-            return validateReferences;
-        }
-        
-        public void setValidateReferences(boolean validateReferences) {
-            this.validateReferences = validateReferences;
-        }
-    }
-}

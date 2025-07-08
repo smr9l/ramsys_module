@@ -1,5 +1,6 @@
 package com.ramsys.reference.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ramsys.common.model.Auditable;
 import com.ramsys.reference.internal.generator.PartnerCode;
 import com.ramsys.reference.model.embedded.AddressInfo;
@@ -7,9 +8,6 @@ import com.ramsys.reference.model.embedded.ContactInfo;
 import com.ramsys.reference.model.embedded.FinancialInfo;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entité représentant les partenaires (NON TRADUISIBLE)
@@ -28,6 +26,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"parentPartner"})
 public class Partner extends Auditable {
 
     @Id
@@ -35,9 +34,9 @@ public class Partner extends Auditable {
     @SequenceGenerator(name = "ref_partner_seq", sequenceName = "ref_partner_id_seq",allocationSize = 1)
     private Long id;
 
-    // === INFORMATIONS DE BASE ===
+
     @PartnerCode
-    @Column(name = "code", unique = true, nullable = false, length = 10)
+    @Column(name = "code", unique = true, nullable = false, length = 20)
     private String code;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -86,11 +85,13 @@ public class Partner extends Auditable {
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "rating", column = @Column(name = "rating")),
         @AttributeOverride(name = "scoring", column = @Column(name = "scoring")),
         @AttributeOverride(name = "bankName", column = @Column(name = "bank_name")),
         @AttributeOverride(name = "bankIban", column = @Column(name = "bank_iban")),
         @AttributeOverride(name = "swiftCode", column = @Column(name = "swift"))
+    })
+    @AssociationOverrides({
+        @AssociationOverride(name = "rating", joinColumns = @JoinColumn(name = "rating_id"))
     })
     @Builder.Default
     private FinancialInfo financialInfo = new FinancialInfo();
@@ -102,7 +103,8 @@ public class Partner extends Auditable {
         @AttributeOverride(name = "road", column = @Column(name = "road")),
         @AttributeOverride(name = "building", column = @Column(name = "building")),
         @AttributeOverride(name = "flat", column = @Column(name = "flat")),
-        @AttributeOverride(name = "gpsCode", column = @Column(name = "gps_code"))
+        @AttributeOverride(name = "longitude", column = @Column(name = "longitude")),
+        @AttributeOverride(name = "latitude", column = @Column(name = "latitude")),
     })
     @Builder.Default
     private AddressInfo addressInfo = new AddressInfo();
@@ -110,11 +112,10 @@ public class Partner extends Auditable {
     // === HIÉRARCHIE PARENT/ENFANT ===
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_partner_id")
+    @JsonBackReference
     private Partner parentPartner;
 
-    @OneToMany(mappedBy = "parentPartner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Partner> childPartners = new ArrayList<>();
+
 
     // === NOUVEAUX ATTRIBUTS POUR LES CAPACITÉS ET TYPES ===
     @Column(name = "is_reinsurer")
@@ -129,17 +130,6 @@ public class Partner extends Auditable {
     @Column(name = "type_other")
     private String otherType;
 
-    // === MÉTHODES UTILITAIRES POUR LA HIÉRARCHIE ===
-    
-    public void addChildPartner(Partner child) {
-        childPartners.add(child);
-        child.setParentPartner(this);
-    }
-
-    public void removeChildPartner(Partner child) {
-        childPartners.remove(child);
-        child.setParentPartner(null);
-    }
 
 
     /**
@@ -162,9 +152,4 @@ public class Partner extends Auditable {
     public String getRiskLevel() {
         return financialInfo.getRiskLevel();
     }
-
-
-
-
-
 }

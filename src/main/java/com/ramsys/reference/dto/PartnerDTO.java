@@ -37,7 +37,7 @@ public class PartnerDTO {
     private AddressInfoDto addressInfo;
     private FinancialInfoDto financialInfo;
     private PartnerSummaryDto parentPartner;
-     private String otherType;
+    private String otherType;
 
     @Override
     public String toString() {

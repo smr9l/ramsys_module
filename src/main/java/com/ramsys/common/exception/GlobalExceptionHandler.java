@@ -33,6 +33,42 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
+
+            // Utiliser le MessageSource de Spring pour interpoler les messages
+            if (error instanceof FieldError fieldError) {
+                try {
+                    // Récupérer les codes d'erreur et arguments pour l'interpolation
+                    String[] codes = fieldError.getCodes();
+                    Object[] arguments = fieldError.getArguments();
+
+                    // Essayer d'utiliser MessageSource pour résoudre le message avec interpolation
+                    if (codes != null && codes.length > 0) {
+                        for (String code : codes) {
+                            try {
+                                String resolvedMessage = messageService.getMessage(code, arguments);
+                                if (resolvedMessage != null && !resolvedMessage.equals(code)) {
+                                    errorMessage = resolvedMessage;
+                                    break;
+                                }
+                            } catch (Exception ignored) {
+                                // Continuer avec le message par défaut
+                            }
+                        }
+                    }
+
+                    // Si l'interpolation n'a pas fonctionné, essayer une interpolation simple
+                    if (errorMessage != null && errorMessage.contains("{0}") && arguments != null && arguments.length > 2) {
+                        // Pour @Size, l'argument max est généralement à l'index 2
+                        Object maxValue = arguments[2];
+                        if (maxValue != null) {
+                            errorMessage = errorMessage.replace("{0}", maxValue.toString());
+                        }
+                    }
+                } catch (Exception e) {
+                    log.debug("Erreur lors de l'interpolation du message de validation: {}", e.getMessage());
+                }
+            }
+
             errors.put(fieldName, errorMessage);
         });
 
@@ -193,4 +229,5 @@ public class GlobalExceptionHandler {
         log.error("Erreur inattendue", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
-} 
+}
+

@@ -44,11 +44,12 @@ public class SecurityConfig {
     private List<String> allowedOrigins;
 
     private static final String[] WHITE_LIST_URLS = {
-            "/api/auth/**",
-            "/api/public/**",
-            "/actuator/health",
-            "/v3/api-docs/**",
-            "/swagger-ui/**"
+            "/api/auth/login",           // Endpoint de connexion
+            "/api/auth/refresh",         // Endpoint de refresh token - IMPORTANT !
+            "/api/public/**",            // Endpoints publics
+            "/actuator/health",          // Health check
+            "/v3/api-docs/**",          // Documentation API
+            "/swagger-ui/**"            // Swagger UI
     };
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -99,7 +100,8 @@ public class SecurityConfig {
                         )
 
                 ) .headers(headers -> headers
-                        .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; frame-ancestors 'none'; base-uri 'self';"))
+                        .contentSecurityPolicy(csp ->
+                                csp.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; frame-ancestors 'none'; base-uri 'self';"))
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
                         .httpStrictTransportSecurity(hsts -> hsts
                                 .includeSubDomains(true).maxAgeInSeconds(31536000).preload(true))
@@ -112,7 +114,7 @@ public class SecurityConfig {
                         })
                 )
                 .requiresChannel(channel -> channel
-                        .anyRequest().requiresSecure() // Force HTTPS pour toutes les requêtes
+                        .anyRequest().requiresSecure()
                 )
                 .build();
     }

@@ -29,7 +29,7 @@ spring:
   # Liquibase configuration
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
-    drop-first: false  # Drop and recreate schema for each test run
+    drop-first: true  # Drop and recreate schema for each test run
           
   # Disable unnecessary features in tests
   cloud:

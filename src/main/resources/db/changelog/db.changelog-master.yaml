@@ -2,4 +2,4 @@ databaseChangeLog:
   - include:
       file: db/changelog/V1__create_master_schema.sql
   - include:
-      file: db/changelog/V2__insert_master_data.sql
+      file: db/changelog/V2__insert_master_data_corrected.sql

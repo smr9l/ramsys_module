@@ -6,6 +6,7 @@ import com.ramsys.reference.api.PartnerApi;
 import com.ramsys.reference.dto.*;
 import com.ramsys.reference.internal.service.PartnerService;
 import com.ramsys.reference.internal.service.PartnerTypeService;
+import com.ramsys.reference.internal.service.RatingService;
 import com.ramsys.reference.model.Partner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ public class PartnerApiImpl implements PartnerApi {
 
     private final PartnerService partnerService;
     private final PartnerTypeService partnerTypeService;
+    private final RatingService ratingService;
 
 
 
@@ -51,13 +53,13 @@ public class PartnerApiImpl implements PartnerApi {
 
     @Override
     @Transactional
-    public PartnerDTO updatePartner(Long id, UpdatePartnerDTO updatePartnerDTO) {
+    public PartnerDTO updatePartner(Long id, CreatePartnerDTO updatePartnerDTO) {
         return partnerService.updatePartner(id, updatePartnerDTO);
     }
 
     @Override
     @Transactional
-    public void deactivatePartner(Long id, String reason) {
+    public void deactivatePartner(Long id) {
         Partner partner = partnerService.findPartnerById(id)
                 .orElseThrow(() -> new BusinessException("Partner not found with id: " + id));
         partner.setActive(false);
@@ -74,5 +76,10 @@ public class PartnerApiImpl implements PartnerApi {
     @Override
     public Optional<ReferenceDTO> getPartnerTypeById(Long id) {
         return partnerTypeService.getPartnerTypeById(id);
+    }
+
+    @Override
+    public List<ReferenceDTO> getPartnerRatings() {
+        return ratingService.getAllRatings();
     }
 }

@@ -60,4 +60,5 @@ public class ContactInfo {
                 ", email='" + getFullEmail() + '\'' +
                 '}';
     }
-} 
+}
+

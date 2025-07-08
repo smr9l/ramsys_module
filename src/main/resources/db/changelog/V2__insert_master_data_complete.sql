@@ -301,9 +301,9 @@ VALUES (2024, 1, 'Janvier 2024', '2024-01-01', '2024-01-31', 'system');
 
 -- Insert partner types
 INSERT INTO ref_partner_type (code, name, name_fr, name_en, name_ar, created_by)
-VALUES ('CEDANT', 'Cédant', 'Cédant', 'Cedant', 'المتنازل', 'system'),
-       ('BROKER', 'Courtier', 'Courtier', 'Broker', 'وسيط', 'system'),
-       ('OTHER', 'Autre', 'Autre', 'Other', 'أخرى', 'system');
+VALUES ('C', 'Cédant', 'Cédant', 'Cedant', 'المتنازل', 'system'),
+       ('B', 'Courtier', 'Courtier', 'Broker', 'وسيط', 'system'),
+       ('T', 'Autre', 'Autre', 'Other', 'أخرى', 'system');
 
 -- Insert rating data
 INSERT INTO ref_rating (code, name, name_fr, name_en, name_ar, description, numeric_value, created_by)
@@ -356,7 +356,7 @@ VALUES ('F01', 'Facultative', (SELECT id FROM ref_location WHERE code = 'L1'), '
 --changeset system:6-insert-user-data
 --comment: Insertion des données utilisateurs
 INSERT INTO ref_user_detail (username, password_hash, first_name, last_name, email, created_by)
-VALUES ('admin', '$2a$10$DowJonesPasswordHash123456789012345678901234567890', 'System', 'Administrator',
+VALUES ('admin', 'admin123', 'System', 'Administrator',
         'admin@ramsys.local', 'system'),
        ('demo', '$2a$10$DemoPasswordHash1234567890123456789012345678901234', 'Demo', 'User', 'demo@ramsys.local',
         'system');

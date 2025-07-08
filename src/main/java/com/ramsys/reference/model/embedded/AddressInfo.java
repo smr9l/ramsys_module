@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 /**
  * Informations d'adresse embeddées
  */
@@ -30,8 +32,11 @@ public class AddressInfo {
     @Column(name = "flat", length = 40)
     private String flat;
 
-    @Column(name = "gps_code", length = 12)
-    private String gpsCode;
+    @Column(name = "latitude", precision = 10, scale = 8)
+    private BigDecimal latitude;
+
+    @Column(name = "longitude", precision = 11, scale = 8)
+    private BigDecimal longitude;
 
     /**
      * Construit l'adresse formatée pour l'affichage
@@ -68,42 +73,7 @@ public class AddressInfo {
         return fullAddress != null || hasDetailedAddress();
     }
 
-    /**
-     * Vérifie si les coordonnées GPS sont disponibles
-     * @return true si le code GPS est renseigné
-     */
-    public boolean hasGpsCoordinates() {
-        return gpsCode != null && !gpsCode.trim().isEmpty();
-    }
 
-    /**
-     * Valide le format du code GPS (exemple: format simple)
-     * @return true si le format GPS semble valide
-     */
-    public boolean isValidGpsCode() {
-        if (gpsCode == null) return true; // Optionnel
-        // Format simple: doit contenir des chiffres et éventuellement des lettres/points
-        return gpsCode.matches("^[A-Z0-9.-]+$");
-    }
 
-    /**
-     * Retourne l'adresse pour l'affichage avec informations GPS si disponibles
-     * @return L'adresse complète avec GPS
-     */
-    public String getFullDisplayAddress() {
-        String address = getFormattedAddress();
-        if (hasGpsCoordinates()) {
-            return address + " (GPS: " + gpsCode + ")";
-        }
-        return address;
-    }
+}
 
-    @Override
-    public String toString() {
-        return "AddressInfo{" +
-                "formattedAddress='" + getFormattedAddress() + '\'' +
-                ", gpsCode='" + gpsCode + '\'' +
-                ", hasGps=" + hasGpsCoordinates() +
-                '}';
-    }
-} 

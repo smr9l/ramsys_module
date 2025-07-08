@@ -15,6 +15,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,9 @@ public class PartnerService {
     private final CurrencyRepository currencyRepository;
     private final MessageService messageService;
     private final PartnerSpecification partnerSpecification; // Inject the specification builder
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Retrieves a paginated and filtered list of partners.
@@ -77,12 +82,14 @@ public class PartnerService {
 
 
     @Transactional
-    public PartnerDTO updatePartner(Long id,  UpdatePartnerDTO updatePartnerDTO) {
+    public PartnerDTO updatePartner(Long id,  CreatePartnerDTO updatePartnerDTO) {
         Partner partner = partnerRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(messageService.getMessage("partner.notfound", id)));
         partnerMapper.updateEntityFromDto(updatePartnerDTO, partner);
         // handle relations update here if necessary
-        return partnerMapper.toDto(partnerRepository.save(partner));
+        Partner savedPartner = partnerRepository.saveAndFlush(partner);
+
+        return partnerMapper.toDto(savedPartner);
     }
 
     public Optional<Partner> findPartnerById(Long id) {
@@ -124,6 +131,11 @@ public class PartnerService {
         });
 
         Partner savedPartner = partnerRepository.save(partner);
+        
+        // Flush and refresh to get the generated code value
+        entityManager.flush();
+        entityManager.refresh(savedPartner);
+        
         return partnerMapper.toDto(savedPartner);
     }
 
@@ -133,10 +145,12 @@ public class PartnerService {
     }
 
 
+    @Transactional
     public void save(Partner partner) {
         if (partner == null) {
             throw new BusinessException(messageService.getMessage("partner.null"));
         }
         partnerRepository.save(partner);
+        entityManager.flush();
     }
 }

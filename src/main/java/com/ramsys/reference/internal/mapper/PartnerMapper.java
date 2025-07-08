@@ -4,7 +4,6 @@ import com.ramsys.common.mapper.LocalizedMapper;
 import com.ramsys.reference.dto.CreatePartnerDTO;
 import com.ramsys.reference.dto.PartnerDTO;
 import com.ramsys.reference.dto.PartnerSummaryDto;
-import com.ramsys.reference.dto.UpdatePartnerDTO;
 import com.ramsys.reference.model.Partner;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -29,7 +28,9 @@ public interface PartnerMapper  {
     /**
      * Update an existing Partner entity from UpdatePartnerDTO
      */
-    void updateEntityFromDto(UpdatePartnerDTO dto, @MappingTarget Partner entity);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "code", ignore = true)
+    void updateEntityFromDto(CreatePartnerDTO dto, @MappingTarget Partner entity);
 
     PartnerSummaryDto toSummaryDto(Partner partner);
 }

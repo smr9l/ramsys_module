@@ -4,6 +4,8 @@ import com.ramsys.common.dto.ReferenceDTO;
 import com.ramsys.common.mapper.LocalizedMapper;
 import com.ramsys.reference.internal.repository.PartnerTypeRepository;
 import com.ramsys.reference.model.PartnerType;
+import com.ramsys.reference.model.PartnerTypeCodeEnum;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,4 +36,11 @@ public class PartnerTypeService {
         List<PartnerType> partnerTypes = partnerTypeRepository.findByActiveTrue();
         return referenceMapper.toDtoList(partnerTypes, locale);
     }
-} 
+
+    public boolean isType(@NotNull(message = "{partner.partnertype.required}") Long partnerTypeId, PartnerTypeCodeEnum partnerTypeCodeEnum) {
+        return partnerTypeRepository.findById(partnerTypeId)
+                .map(PartnerType::getCode)
+                .map(code -> code.equals(partnerTypeCodeEnum.getCode()))
+                .orElse(false);
+    }
+}

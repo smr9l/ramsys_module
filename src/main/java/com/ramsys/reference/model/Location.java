@@ -4,6 +4,8 @@ import com.ramsys.common.model.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "ref_location")
 @Data
@@ -18,7 +20,7 @@ public class Location extends Auditable {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 10)
+    @Column(unique = true, nullable = false, length = 2)
     private String code;
 
     @Column(name = "name", length = 100, nullable = false)
@@ -28,31 +30,49 @@ public class Location extends Auditable {
     @JoinColumn(name = "partner_id", nullable = false)
     private Partner partner;
 
-
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id", nullable = false)
+    @JoinColumn(name = "city_id")
     private City city;
 
-    @Column(name = "phone", length = 20)
-    private String phone;
-
-    @Column(name = "fax", length = 20)
-    private String fax;
-
-    @Column(name = "email", length = 100)
-    private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reporting_currency_id", nullable = false)
+    private Currency reportingCurrency;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_id", nullable = false)
-    private Currency currency;
+    @JoinColumn(name = "current_period_id")
+    private AccountingPeriod currentPeriod;
+
+
+    @Column(name = "locale", length = 10, nullable = false)
+    @Builder.Default
+    private String locale = "fr-FR";
+
+    @Column(name = "decimal_places", nullable = false)
+    @Builder.Default
+    private Short decimalPlaces = 2;
+
+    @Column(name = "percentage_decimal_places")
+    @Builder.Default
+    private Short percentageDecimalPlaces = 8;
+
+    @Column(name = "settlement_tolerance", precision = 15, scale = 5, nullable = false)
+    @Builder.Default
+    private BigDecimal settlementTolerance = new BigDecimal("5.00000");
+
+    @Column(name = "uncovered_tolerance", precision = 15, scale = 5)
+    @Builder.Default
+    private BigDecimal uncoveredTolerance = BigDecimal.ZERO;
+
+    @Column(name = "factoring_ind", nullable = false)
+    @Builder.Default
+    private Boolean factoringInd = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accounting_period_id", nullable = false)
-    private AccountingPeriod accountingPeriod;
+    @JoinColumn(name = "financial_partner_id")
+    private Partner financialPartner;
 
-
-
+    @Column(name = "default_bank_account")
+    private Integer defaultBankAccount;
 
 
 }

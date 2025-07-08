@@ -1,6 +1,7 @@
 package com.ramsys.reference.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ramsys.reference.validation.TypeOtherRequired;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -12,6 +13,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@TypeOtherRequired // Validation conditionnelle pour typeOther
 public class CreatePartnerDTO {
 
     @NotBlank(message = "{partner.name.required}")
